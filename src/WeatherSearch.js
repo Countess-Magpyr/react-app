@@ -9,7 +9,6 @@ export default function WeatherSearch() {
   function displayWeather(response) {
     setLoaded(true);
     setWeather({
-      city: city,
       temperature: response.data.main.temp,
       wind: response.data.wind.speed,
       humidity: response.data.main.humidity,
@@ -23,6 +22,7 @@ export default function WeatherSearch() {
     let apiKey = "24938515d6364eea8b6bfd1202de9eb1";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayWeather);
+    console.log(apiUrl);
   }
 
   function updateCity(event) {
@@ -30,10 +30,31 @@ export default function WeatherSearch() {
   }
 
   let form = (
-    <form onSubmit={handleSubmit}>
-      <input type="search" placeholder="Enter a city.." onChange={updateCity} />
-      <button type="Submit">Search</button>
-    </form>
+    <div className="container">
+      <form className="search-form" onSubmit={handleSubmit}>
+        <div className="row mt-5">
+          <div className="col">
+            <input
+              type="search"
+              placeholder="Enter a city.."
+              autofocus="on"
+              autocomplete="off"
+              onChange={updateCity}
+              className="form-control shadow-sm"
+            />
+          </div>
+          <div className="col">
+            <button
+              type="Submit"
+              value="Search"
+              className="form-control-btn btn btn-primary shadow-sm"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 
   if (loaded) {
@@ -41,7 +62,7 @@ export default function WeatherSearch() {
       <div>
         {form}
         <ul>
-          <li>City: {updateCity} </li>
+          <li>City: {city} </li>
           <li>Temperature: {Math.round(weather.temperature)}°C</li>
           <li>Description: {weather.description}</li>
           <li>Humidity: {weather.humidity}%</li>
